@@ -43,8 +43,10 @@ async function buildDatabase() {
     );
 
     for (const word of words) {
-      // Clean the word and insert
-      stmt.run([word.trim().toLowerCase()]);
+      // Clean the word: remove BOM if present and trim, but preserve original casing
+      const cleaned = word.replace(/^\uFEFF/, "").trim();
+      if (cleaned.length === 0) continue;
+      stmt.run([cleaned]);
     }
 
     stmt.free();

@@ -36,7 +36,7 @@ export function getSuggestions(input: string): string[] {
   const stmt = db.prepare(`
     SELECT word 
     FROM dictionary 
-    WHERE word LIKE $input 
+    WHERE word LIKE $input COLLATE NOCASE
     ORDER BY regular_used DESC, word ASC 
     LIMIT 5
   `);
