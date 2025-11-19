@@ -1,0 +1,35 @@
+{
+  "name": "logseq-smart-typing",
+  "version": "0.0.1",
+  "description": "Predictive text and intelligent autocomplete for Logseq",
+  "main": "dist/index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "logseq": {
+    "id": "logseq-smart-typing",
+    "title": "Smart Typing",
+    "description": "Predictive text and intelligent autocomplete for Logseq",
+    "icon": "./icon.svg"
+  },
+  "keywords": [
+    "logseq",
+    "plugin",
+    "autocomplete",
+    "typing"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@logseq/libs": "^0.0.17",
+    "@types/node": "^20.11.0",
+    "@types/sql.js": "^1.4.9",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.11"
+  },
+  "dependencies": {
+    "sql.js": "^1.10.2"
+  }
+}
