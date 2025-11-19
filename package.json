@@ -1,11 +1,13 @@
 {
   "name": "logseq-smart-typing",
   "version": "0.0.1",
+  "type": "module",
   "description": "Predictive text and intelligent autocomplete for Logseq",
   "main": "dist/index.html",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:db": "node scripts/build-db.js",
     "preview": "vite preview"
   },
   "logseq": {

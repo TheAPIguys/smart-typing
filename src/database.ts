@@ -10,17 +10,24 @@ export async function initDatabase() {
     locateFile: (file) => `https://sql.js.org/dist/${file}`,
   });
 
-  db = new SQL.Database();
-
-  // Create the table if it doesn't exist
-  const sqlstr = `
-    CREATE TABLE IF NOT EXISTS dictionary (
-      word TEXT PRIMARY KEY,
-      regular_used INTEGER DEFAULT 1
-    );
-  `;
-  db.run(sqlstr);
-  console.log("Smart-Type Database Initialized");
+  // Load the database from the public folder
+  try {
+    const response = await fetch("./english-dict.sqlite");
+    const buffer = await response.arrayBuffer();
+    db = new SQL.Database(new Uint8Array(buffer));
+    console.log("Smart-Type Database Loaded from english-dict.sqlite");
+  } catch (e) {
+    console.error("Failed to load database, creating new one", e);
+    db = new SQL.Database();
+    // Create the table if it doesn't exist (fallback)
+    const sqlstr = `
+      CREATE TABLE IF NOT EXISTS dictionary (
+        word TEXT PRIMARY KEY,
+        regular_used INTEGER DEFAULT 1
+      );
+    `;
+    db.run(sqlstr);
+  }
 }
 
 export function getSuggestions(input: string): string[] {
