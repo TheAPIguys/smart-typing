@@ -3,16 +3,25 @@ import initSqlJs, { Database } from "sql.js";
 let db: Database | null = null;
 
 export async function initDatabase() {
+  // Resolve paths relative to this module. In the built plugin the JS lives in
+  // `dist/assets/` while runtime assets were copied to `dist/`, so we point to
+  // the parent folder (`..`) from the assets bundle.
+  const wasmUrl = new URL(`../sql-wasm.wasm`, import.meta.url).toString();
+  const sqliteUrl = new URL(
+    `../english-dict.sqlite`,
+    import.meta.url
+  ).toString();
+
   const SQL = await initSqlJs({
-    // We need to point to the wasm file. In a real build, this needs to be handled carefully.
-    // For now, we'll assume it's available or loaded from a CDN for simplicity in this setup,
-    // or handled by the build process copying the wasm file.
-    locateFile: (file) => `https://sql.js.org/dist/${file}`,
+    // Ignore the `file` argument and return the explicit wasm URL so sql.js
+    // always fetches the shipped `sql-wasm.wasm` from the dist root.
+    locateFile: () => wasmUrl,
   });
 
-  // Load the database from the public folder
+  // Load the database from the dist root (works when code is bundled to dist/assets)
   try {
-    const response = await fetch("./english-dict.sqlite");
+    console.log("Fetching sqlite from", sqliteUrl);
+    const response = await fetch(sqliteUrl);
     const buffer = await response.arrayBuffer();
     db = new SQL.Database(new Uint8Array(buffer));
     console.log("Smart-Type Database Loaded from english-dict.sqlite");

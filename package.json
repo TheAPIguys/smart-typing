@@ -8,6 +8,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "build:db": "node scripts/build-db.js",
+    "build:dist": "node scripts/vendor-wasm.js && pnpm run build && node scripts/copy-manifest.js",
     "preview": "vite preview"
   },
   "logseq": {
